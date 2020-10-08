@@ -27,3 +27,6 @@ Git-clone it, or [download it as a zip archive](https://github.com/benoitpointet
 
 ## Performance
 It works well under 200 items. Over that, it's robust but sluggish: both generating the graph and letting the force-directed layout happen on the web page will take many seconds/minutes.
+
+## Feedbacks & discussion
+Welcome on this thread [https://discourse.devontechnologies.com/t/graph-view-a-network-visualization-script-for-dt/58782](https://discourse.devontechnologies.com/t/graph-view-a-network-visualization-script-for-dt/58782).
