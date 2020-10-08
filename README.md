@@ -20,5 +20,10 @@ Git-clone it, or [download it as a zip archive](https://github.com/benoitpointet
 ## Usage
 1. **Select several items then launch the applescript.** If you launch without selecting, the script will take all search results (if in search mode) or the direct children of the current group.
 2. A progress bar appears showing you progress info.
-3. The script opens the `index.html` file and populates it with the graph data.
+3. The script opens the `index.html` file and populates it with the graph data. 
+	* Every items is a node, groups are blue.
+	* Edges represente parent-child relationships. 
 4. You may zoom in/out and pan in the graph.
+
+## Performance
+It works well under 200 items. Over that, it's robust but sluggish: both generating the graph and letting the force-directed layout happen on the web page will take many seconds/minutes.
