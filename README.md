@@ -1,6 +1,6 @@
 # devonthink-graph-view
 
-This script generates a graph visualization of part of a [Devonthink](https://www.devontechnologies.com/apps/devonthink) database.
+This script generates a graph visualization of part of a [Devonthink](https://www.devontechnologies.com/apps/devonthink)  (DT) database.
 
 ## Origins
 
@@ -24,6 +24,7 @@ Git-clone it, or [download it as a zip archive](https://github.com/benoitpointet
 	* Every items is a node, groups are blue.
 	* Edges represente parent-child relationships. 
 4. You may zoom in/out and pan in the graph.
+5. Double-click on a node to open the item in DT.
 
 ## Performance
 It works well under 200 items. Over that, it's robust but sluggish: both generating the graph and letting the force-directed layout happen on the web page will take many seconds/minutes.
