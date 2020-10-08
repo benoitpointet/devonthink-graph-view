@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+  <html>
+  <head>
+    <title>Devonthink Graph Browser</title>
+  <style type='text/css'>
+    #container {
+      top: 2%;
+      bottom: 2%;
+      left: 2%;
+      right: 2%;
+      position: absolute;
+    }
+  </style>
+  </head>
+  <body>
+  <div id='container'></div>
+  <div class="">
+    <a href="javascript:s.killForceAtlas2();">freeze</a>
+  </div>
+  <script src="sigma/sigma.min.js"></script>
+  <script src="sigma/plugins/sigma.layout.forceAtlas2.min.js"></script>
+  <script>
+    var s = new sigma({
+      renderer: {
+        container: document.getElementById('container'),
+          type: 'svg'
+        },
+      settings: {}
+    });
+
+    function graphThis(graphJSON) {
+      s.graph.read(graphJSON);
+      s.startForceAtlas2({
+        startingIterations: 10,
+        slowDown: 10
+      });
+      // window.setTimeout(function() {s.killForceAtlas2();}, 4000);
+    }
+
+    var testJSON = {"nodes":[{"size":1,"id":"6","label":"Trash","y":666,"x":94,"color":"#11f"},{"size":1,"id":"9","label":"Inbox","y":28,"x":752,"color":"#11f"},{"size":1,"id":"12","label":"Tags","y":799,"x":692,"color":"#11f"},{"size":1,"id":"26","label":"G10","y":466,"x":62,"color":"#11f"},{"size":1,"id":"93","label":"G00","y":58,"x":475,"color":"#11f"},{"size":1,"id":"6314","label":"A Test Doc - Google Docs","y":714,"x":134,"color":"#111"},{"size":1,"id":"6365","label":"A Test Doc - Google Docs (PDF Snapshot)","y":224,"x":800,"color":"#111"},{"size":1,"id":"8368","label":"graph","y":775,"x":269,"color":"#11f"},{"size":1,"id":"8421","label":"STAR Model Plus Test","y":760,"x":944,"color":"#111"},{"size":1,"id":"6337","label":"a test markdown","y":483,"x":711,"color":"#111"},{"size":1,"id":"8424","label":"STAR Model Plus Test PDF","y":227,"x":933,"color":"#111"},{"size":1,"id":"2.147483645E+9","label":"Zandbox","y":988,"x":554,"color":"#11f"}],"edges":[{"id":"2.147483645E+9-6","target":"6","source":"2.147483645E+9"},{"id":"2.147483645E+9-9","target":"9","source":"2.147483645E+9"},{"id":"2.147483645E+9-12","target":"12","source":"2.147483645E+9"},{"id":"2.147483645E+9-26","target":"26","source":"2.147483645E+9"},{"id":"2.147483645E+9-93","target":"93","source":"2.147483645E+9"},{"id":"2.147483645E+9-6314","target":"6314","source":"2.147483645E+9"},{"id":"2.147483645E+9-6365","target":"6365","source":"2.147483645E+9"},{"id":"2.147483645E+9-8368","target":"8368","source":"2.147483645E+9"},{"id":"2.147483645E+9-8421","target":"8421","source":"2.147483645E+9"},{"id":"2.147483645E+9-6337","target":"6337","source":"2.147483645E+9"},{"id":"2.147483645E+9-8424","target":"8424","source":"2.147483645E+9"}]};
+
+  </script>
+</body>
+</html>
