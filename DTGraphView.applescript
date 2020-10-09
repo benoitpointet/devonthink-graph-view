@@ -20,8 +20,8 @@ on toJSON(x)
 		else
 			(ca's NSString's alloc()'s initWithData:json encoding:(ca's NSUTF8StringEncoding)) as text
 		end if
-	else if c is date then
-		"\"" & ((x - (time to GMT)) as «class isot» as string) & ".000Z" & "\""
+		--	else if c is date then
+		--		"\"" & ((x - (time to GMT)) as "class isot" as string) & ".000Z" & "\""
 	else if c is text then
 		"\"" & x & "\""
 	else if (c is integer or c is real) then
@@ -124,7 +124,7 @@ on run
 		-- generate graph
 		set {nodes, edges} to my graphItemsSet(theSelection)
 		-- display alert (length of nodes as string) & " nodes, " & (length of edges as string) & " edges"
-		show progress indicator "Graph View : preparing view …"
+		show progress indicator "Graph View : preparing view ..."
 		set theJSONData to my toJSON({nodes:nodes, edges:edges})
 		-- display alert (theJSONData)
 		
