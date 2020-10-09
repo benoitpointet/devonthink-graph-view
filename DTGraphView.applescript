@@ -87,7 +87,7 @@ on graphItemsSet(theList)
 		end repeat
 		
 		-- second pass to graph edges
-		show progress indicator "Graph View : processing links ..." steps 2 * (length of theList) + 1
+		show progress indicator "Graph View : processing links ..."
 		repeat with theItem in theList
 			step progress indicator
 			repeat with childItem in children of theItem
