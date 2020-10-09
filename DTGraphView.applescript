@@ -54,7 +54,7 @@ on nodify(theItem)
 		set theRefURL to reference URL of theItem
 		set theID to (get uuid of theItem) as string
 		set theLabel to my labelify(get name of theItem as string, 128)
-		set newNode to {|id|:theID, |label|:theLabel, |x|:(random number from 0 to 1000), |y|:(random number from 0 to 1000), |color|:theColor, |xdlink|:theRefURL}
+		set newNode to {|id|:theID, |label|:theLabel, x:(random number from 0 to 1000), y:(random number from 0 to 1000), |color|:theColor, xdlink:theRefURL}
 	end tell
 	return newNode
 end nodify
@@ -63,8 +63,8 @@ on edgify(itemA, itemB)
 	tell application id "DNtp"
 		set idA to (get uuid of itemA) as string
 		set idB to (get uuid of itemB) as string
+		set newEdge to {|id|:idA & "-" & idB, |source|:idA, target:idB}
 	end tell
-	set newEdge to {|id|:idA & "-" & idB, |source|:idA, |target|:idB}
 	return newEdge
 end edgify
 
