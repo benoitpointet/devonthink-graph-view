@@ -32,7 +32,7 @@ on toJSON(x)
 		try
 			x as text
 		on error
-			("«" & c as text) & "»"
+			("'" & c as text) & "'"
 		end try
 	end if
 end toJSON
@@ -87,7 +87,7 @@ on graphItemsSet(theList)
 		end repeat
 		
 		-- second pass to graph edges
-		show progress indicator "Graph View : processing links …" steps 2 * (length of theList) + 1
+		show progress indicator "Graph View : processing links ..." steps 2 * (length of theList) + 1
 		repeat with theItem in theList
 			step progress indicator
 			repeat with childItem in children of theItem
