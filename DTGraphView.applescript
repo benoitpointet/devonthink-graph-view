@@ -1,4 +1,5 @@
 use AppleScript version "2.4" -- Yosemite (10.10) or later
+use script "RegexAndStuffLib" version "1.0.6"
 use scripting additions
 use framework "Foundation"
 
@@ -59,12 +60,8 @@ on nodify(theItem)
 	return newNode
 end nodify
 
-on edgify(itemA, itemB)
-	tell application id "DNtp"
-		set idA to (get uuid of itemA) as string
-		set idB to (get uuid of itemB) as string
-		set newEdge to {|id|:idA & "-" & idB, |source|:idA, target:idB}
-	end tell
+on edgify(idA, idB, theLabel)
+	set newEdge to {|id|:idA & "-" & idB, source:idA, target:idB, label:theLabel}
 	return newEdge
 end edgify
 
@@ -90,16 +87,34 @@ on graphItemsSet(theList)
 		show progress indicator "Graph View : processing links ..."
 		repeat with theItem in theList
 			step progress indicator
+			
+			-- graph parent-child edges
+			set idA to (get uuid of theItem) as string
 			repeat with childItem in children of theItem
 				if nodeIDs contains ((uuid of childItem) as string) then
-					set edge to my edgify(theItem, childItem)
+					set idB to (get uuid of childItem) as string
+					set edge to my edgify(idA, idB, "contains")
 					if edgeIDs does not contain (|id| of edge) then
 						set end of edgeIDs to |id| of edge
 						set end of edges to edge
 					end if
 				end if
-				
 			end repeat
+			
+			-- graph "x-devonthink-item" links in URL edges
+			set theURL to get URL of theItem
+			set theMatch to regex search once theURL search pattern "x-devonthink-item:\\/\\/"
+			if theMatch is not missing value then
+				set idB to regex search once theURL search pattern "........-....-....-....-............"
+				if nodeIDs contains idB then
+					set edge to my edgify(idA, idB, "source (url)")
+					if edgeIDs does not contain (|id| of edge) then
+						set end of edgeIDs to |id| of edge
+						set end of edges to edge
+					end if
+				end if
+			end if
+			
 		end repeat
 	end tell
 	return {nodes, edges}
