@@ -25,10 +25,11 @@
     var s = new sigma({
       renderer: {
         container: document.getElementById('container'),
-          type: 'svg'
+          type: 'canvas'
         },
       settings: {
         defaultLabelColor: "#888",
+        defaultEdgeLabelColor: "#888",
         defaultEdgeColor: "#333",
         defaultNodeColor: "#222",
         labelSize: "fixed",
@@ -36,7 +37,7 @@
         drawEdgeLabels: true,
         zoomingRatio: 1.2,
         defaultEdgeType: "arrow",
-        minArrowSize: 100,
+        minArrowSize: 8,
       }
     });
 
