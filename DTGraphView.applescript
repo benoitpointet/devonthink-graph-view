@@ -61,7 +61,9 @@ on nodify(theItem)
 end nodify
 
 on edgify(idA, idB, theLabel)
-	set newEdge to {|id|:idA & "-" & idB, source:idA, target:idB, label:theLabel}
+	tell application id "DNtp"
+		set newEdge to {|id|:idA & "-" & idB, |source|:idA, target:idB, label:theLabel}
+	end tell
 	return newEdge
 end edgify
 
