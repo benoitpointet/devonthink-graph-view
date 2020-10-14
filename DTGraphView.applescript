@@ -132,8 +132,12 @@ on run
 		
 		-- if a search or not
 		if search results of theWindow is not {} then
+			set theMode to "Search"
+			set theModeExtra to search query of theWindow
 			if theSelection is {} then set theSelection to search results of theWindow
 		else
+			set theMode to "Group"
+			set theModeExtra to name of current group
 			if theSelection is {} then set theSelection to children of current group
 			set end of theSelection to current group
 		end if
@@ -151,7 +155,7 @@ on run
 		set htmlPart2 to read (posixPath & "part2.html")
 		set theJS to "graphThis(" & (theJSONData as text) & ");"
 		set theHTML to htmlPart1 & theJS & htmlPart2
-		set exportName to "Network View (" & (length of nodes as string) & "n, " & (length of edges as string) & "e" & ")"
+		set exportName to theMode & ": '" & theModeExtra & "' - network view (" & (length of nodes as string) & "n, " & (length of edges as string) & "e" & ")"
 		set exportLocation to inbox
 		set theRecord to create record with {name:exportName, type:html, content:theHTML, locking:true} in exportLocation
 		open window for record theRecord
