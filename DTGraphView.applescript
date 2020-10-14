@@ -145,14 +145,16 @@ on run
 		set theJSONData to my toJSON({nodes:nodes, edges:edges})
 		-- display alert (theJSONData)
 		
-		-- open the html and inject graph data
-		set posixPath to POSIX path of ((path to me as text) & "::")
-		set graphWindowPath to "file://" & posixPath & "index.html"
-		set graphWindow to open tab for URL graphWindowPath
-		
+		-- generate HTML file
+		set posixPath to POSIX path of ((path to me as text) & "::") -- html parts need to stay next to script file
+		set htmlPart1 to read (posixPath & "part1.html")
+		set htmlPart2 to read (posixPath & "part2.html")
 		set theJS to "graphThis(" & (theJSONData as text) & ");"
-		set theResult to do JavaScript theJS in graphWindow
-		
+		set theHTML to htmlPart1 & theJS & htmlPart2
+		set exportName to "Network View (" & (length of nodes as string) & "n, " & (length of edges as string) & "e" & ")"
+		set exportLocation to inbox
+		set theRecord to create record with {name:exportName, type:html, content:theHTML, locking:true} in exportLocation
+		open window for record theRecord
 		hide progress indicator
 	end tell
 end run
