@@ -60,9 +60,9 @@ on nodify(theItem)
 	return newNode
 end nodify
 
-on edgify(idA, idB, theLabel)
+on edgify(idA, idB, theLabel, theType, theColor)
 	tell application id "DNtp"
-		set newEdge to {|id|:idA & "-" & idB, |source|:idA, target:idB, |label|:theLabel}
+		set newEdge to {|id|:idA & "-" & idB & "-" & theLabel, |source|:idA, target:idB, |label|:theLabel, |type|:theType, |color|:theColor}
 	end tell
 	return newEdge
 end edgify
@@ -73,6 +73,8 @@ on graphItemsSet(theList)
 		set nodeIDs to {}
 		set edges to {}
 		set edgeIDs to {}
+		set theLinkPattern to "x-devonthink-item:\\/\\/........-....-....-....-............"
+		set theUuidPattern to "........-....-....-....-............"
 		
 		-- first pass to graph nodes
 		show progress indicator "Graph View : processing " & (length of theList) & " items" steps 2 * (length of theList) + 1
@@ -95,7 +97,7 @@ on graphItemsSet(theList)
 			repeat with childItem in children of theItem
 				if nodeIDs contains ((uuid of childItem) as string) then
 					set idB to (get uuid of childItem) as string
-					set edge to my edgify(idA, idB, "contains")
+					set edge to my edgify(idA, idB, "contains", "line", "#3cf")
 					if edgeIDs does not contain (|id| of edge) then
 						set end of edgeIDs to |id| of edge
 						set end of edges to edge
@@ -105,17 +107,36 @@ on graphItemsSet(theList)
 			
 			-- graph "x-devonthink-item" links in URL edges
 			set theURL to get URL of theItem
-			set theMatch to regex search once theURL search pattern "x-devonthink-item:\\/\\/"
+			set theMatch to regex search once theURL search pattern theLinkPattern
 			if theMatch is not missing value then
-				set idB to regex search once theURL search pattern "........-....-....-....-............"
+				-- display alert (theMatch as string)
+				set idB to regex search once theMatch search pattern theUuidPattern
 				if nodeIDs contains idB then
-					set edge to my edgify(idA, idB, "source (url)")
+					set edge to my edgify(idA, idB, "source-url", "line", "#cf3")
 					if edgeIDs does not contain (|id| of edge) then
 						set end of edgeIDs to |id| of edge
 						set end of edges to edge
 					end if
 				end if
 			end if
+			
+			-- graph "x-devonthink-item" links from source as edge
+			set theSource to get source of theItem
+			set theMatches to regex search theSource search pattern theLinkPattern
+			if theMatches is not {} then
+				-- display alert (theMatches as string)
+				repeat with theMatch in theMatches
+					set idB to regex search once theMatch search pattern theUuidPattern
+					if nodeIDs contains idB then
+						set edge to my edgify(idA, idB, "wiki-link", "line", "#f3c")
+						if edgeIDs does not contain (|id| of edge) then
+							set end of edgeIDs to |id| of edge
+							set end of edges to edge
+						end if
+					end if
+				end repeat
+			end if
+			
 			
 		end repeat
 	end tell
@@ -139,7 +160,7 @@ on run
 			set theMode to "Group"
 			set theModeExtra to name of current group
 			if theSelection is {} then set theSelection to children of current group
-			set end of theSelection to current group
+			-- set end of theSelection to current group
 		end if
 		
 		-- generate graph
