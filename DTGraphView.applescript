@@ -47,7 +47,7 @@ on labelify(theName, max)
 end labelify
 
 on nodify(theItem)
-	set theColor to "#333"
+	set theColor to "#444"
 	-- todo cleanup: clarify why i need the context here
 	tell application id "DNtp"
 		set theType to get type of theItem as string
@@ -62,7 +62,7 @@ end nodify
 
 on edgify(idA, idB, theLabel, theType, theColor)
 	tell application id "DNtp"
-		set newEdge to {|id|:idA & "-" & idB & "-" & theLabel, |source|:idA, target:idB, |label|:theLabel, |type|:theType, |color|:theColor}
+		set newEdge to {|id|:idA & "-" & idB & "-" & theLabel, |source|:idA, target:idB, |type|:theType, |color|:theColor}
 	end tell
 	return newEdge
 end edgify
