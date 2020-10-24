@@ -3,6 +3,10 @@
   <head>
   <meta charset="UTF-8">
   <style type='text/css'>
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 0.9em;
+    }
     #container {
       top: 2%;
       bottom: 2%;
@@ -10,10 +14,20 @@
       right: 2%;
       position: absolute;
     }
+    #popup {
+      padding: 0.5em;
+      background-color: "#222222";
+      position: absolute;
+      width: 20%;
+    }
+    #popup a {
+      text-decoration: none;
+    }
   </style>
   </head>
   <body>
   <div id='container'></div>
+  <div id='popup'></div>
   <div class="">
     <a href="javascript:s.killForceAtlas2();">freeze</a>
   </div>
@@ -77,9 +91,25 @@
         strongGravityMode: true,
         worker: true,
       });
-      s.bind('doubleClickNode', function(e) {
-        window.open(e.data.node.xdlink);
+
+      // popup
+      s.bind('clickNode', function(e) {
+        var prefix = s.renderers[0].options.prefix;
+        var node = e.data.node;
+        var x = Math.round(e.data.node[prefix + 'x']) + 35 + "px";
+        var y = Math.round(e.data.node[prefix + 'y']) + 35 + "px";
+        var popup = document.getElementById("popup");
+        popup.innerHTML = '<a href="'+ node.xdlink +'">' + node.label + '</a>';
+        popup.style.display = "block";
+        popup.style.background = "#ddd";
+        popup.style.top = y;
+        popup.style.left = x;
+        console.log(node);
       });
+      s.bind('clickStage', function(e) {
+        popup.style.display = "none";
+      });
+
     }
     </script>
     <script>
