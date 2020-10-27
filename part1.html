@@ -116,7 +116,9 @@
         var node = e.data.node;
         var popup = document.getElementById("popup");
         popup.style.display = "block";
-        popup.innerHTML = '<h5>' + node.label + '</h5><p><a class="button" title="(open in new tab: alt+cmd+click)" href="'+ node.xdlink +'">open</a> <a class="button" href="'+ node.xdlink +'?reveal=1">reveal</a></p>';
+        popup.innerHTML = '<h5>' + node.name + '</h5>'
+          + '<p><i>' + node.kind + '</i></p>'
+          + '<p><a class="button" title="(open in new tab: alt+cmd+click)" href="'+ node.xdlink +'">open</a> <a class="button" href="'+ node.xdlink +'?reveal=1">reveal</a></p>';
       });
 
 

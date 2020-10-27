@@ -54,8 +54,10 @@ on nodify(theItem)
 		if theType is "group" then set theColor to "#1af"
 		set theRefURL to reference URL of theItem
 		set theID to (get uuid of theItem) as string
-		set theLabel to my labelify(get name of theItem as string, 128)
-		set newNode to {|id|:theID, |label|:theLabel, x:(random number from 0 to 1000), y:(random number from 0 to 1000), |color|:theColor, xdlink:theRefURL}
+		set theKind to (get kind of theItem) as string
+		set theName to (get name of theItem as string)
+		set theLabel to my labelify(theName, 48)
+		set newNode to {|id|:theID, |label|:theLabel, |name|:theName, |kind|:theKind, x:(random number from 0 to 1000), y:(random number from 0 to 1000), |color|:theColor, xdlink:theRefURL}
 	end tell
 	return newNode
 end nodify
