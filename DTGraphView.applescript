@@ -1,4 +1,5 @@
 use AppleScript version "2.4" -- Yosemite (10.10) or later
+
 use script "RegexAndStuffLib" version "1.0.6"
 use scripting additions
 use framework "Foundation"
@@ -122,13 +123,28 @@ on graphItemsSet(theList)
 				end if
 			end if
 			
-			-- graph "x-devonthink-item" links from source as edge
-			set theSource to get source of theItem
-			set theMatches to regex search theSource search pattern theLinkPattern
-			if theMatches is not {} then
+			-- graph "x-devonthink-item" in-text links from source as edge
+			set theOutLinks to (get outgoing references of theItem)
+			if theOutLinks is not {} then
 				-- display alert (theMatches as string)
-				repeat with theMatch in theMatches
-					set idB to regex search once theMatch search pattern theUuidPattern
+				repeat with theOutLink in theOutLinks
+					set idB to (get uuid of theOutLink) as string
+					if nodeIDs contains idB then
+						set edge to my edgify(idA, idB, "x-link", "line", "#808")
+						if edgeIDs does not contain (|id| of edge) then
+							set end of edgeIDs to |id| of edge
+							set end of edges to edge
+						end if
+					end if
+				end repeat
+			end if
+			
+			-- graph in-text wiki links from source as edge
+			set theOutLinks to (get outgoing Wiki references of theItem)
+			if theOutLinks is not {} then
+				-- display alert (theMatches as string)
+				repeat with theOutLink in theOutLinks
+					set idB to (get uuid of theOutLink) as string
 					if nodeIDs contains idB then
 						set edge to my edgify(idA, idB, "wiki-link", "line", "#f4d")
 						if edgeIDs does not contain (|id| of edge) then
@@ -138,7 +154,6 @@ on graphItemsSet(theList)
 					end if
 				end repeat
 			end if
-			
 			
 		end repeat
 	end tell
