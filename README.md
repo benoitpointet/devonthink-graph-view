@@ -24,9 +24,10 @@ The scripts contains different files:
 3. The script generates a graph of the nodes:
 	* Every items is represented as a node of the graph, groups are blue.
 	* **Several relationships are represented as edges**:
-		* **"A contains B"** relationships (like in "group A contains record/group B")
-		* "**x-devonthink-item" links in the record URL** (often used to point to the source of a record).
-		* **Wiki links in Markdown files**.
+		* **"A contains B"** relationships (like in "group A contains record/group B"), in light-cyan.
+		* "**x-devonthink-item" links in the record URL** (often used to point to the source of a record), in light-green.
+		* **Wiki links in Markdown files**, in pink.
+		* "**x-devonthink-item" links in the record content** (often used as an alternative to Wiki-links) in purple. 
 4. The script then embeds the graph data into a HTML doc which by default saves in the global Inbox and open in a separate window.
 5. At first the graph might looks messy and frozen for a few (milli-)seconds: the force-directed layout algorithm has kicked in. Then the graph moves and stabilizes. The speed of this depends on graph complexity (see performance below).
 6. You may interact with the graph in the following ways:
