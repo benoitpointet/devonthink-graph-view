@@ -100,7 +100,7 @@ on graphItemsSet(theList)
 			repeat with childItem in children of theItem
 				if nodeIDs contains ((uuid of childItem) as string) then
 					set idB to (get uuid of childItem) as string
-					set edge to my edgify(idA, idB, "contains", "line", "#aff")
+					set edge to my edgify(idA, idB, "contains", "arrow", "#aff")
 					if edgeIDs does not contain (|id| of edge) then
 						set end of edgeIDs to |id| of edge
 						set end of edges to edge
@@ -115,7 +115,7 @@ on graphItemsSet(theList)
 				-- display alert (theMatch as string)
 				set idB to regex search once theMatch search pattern theUuidPattern
 				if nodeIDs contains idB then
-					set edge to my edgify(idA, idB, "source-url", "line", "#cd2")
+					set edge to my edgify(idA, idB, "source-url", "arrow", "#cd2")
 					if edgeIDs does not contain (|id| of edge) then
 						set end of edgeIDs to |id| of edge
 						set end of edges to edge
@@ -130,7 +130,7 @@ on graphItemsSet(theList)
 				repeat with theOutLink in theOutLinks
 					set idB to (get uuid of theOutLink) as string
 					if nodeIDs contains idB then
-						set edge to my edgify(idA, idB, "x-link", "line", "#808")
+						set edge to my edgify(idA, idB, "x-link", "arrow", "#808")
 						if edgeIDs does not contain (|id| of edge) then
 							set end of edgeIDs to |id| of edge
 							set end of edges to edge
@@ -146,7 +146,7 @@ on graphItemsSet(theList)
 				repeat with theOutLink in theOutLinks
 					set idB to (get uuid of theOutLink) as string
 					if nodeIDs contains idB then
-						set edge to my edgify(idA, idB, "wiki-link", "line", "#f4d")
+						set edge to my edgify(idA, idB, "wiki-link", "arrow", "#f4d")
 						if edgeIDs does not contain (|id| of edge) then
 							set end of edgeIDs to |id| of edge
 							set end of edges to edge
