@@ -15,8 +15,9 @@ The scripts contains different files:
 
 ## Installation
 
-* Git-clone it, or [download it as a zip archive](https://github.com/benoitpointet/devonthink-graph-view/archive/main.zip).
-* This script requires the [RegexAndStuffLib (min v1.0.6)](https://latenightsw.com/support/freeware/) script to run.
+* Git-clone it, or [download it as a zip archive](https://github.com/benoitpointet/devonthink-graph-view/archive/main.zip). You may place it in `~/Library/Application Scripts/com.devon-technologies.think3/Menu/`.
+
+* This script requires the [RegexAndStuffLib (min v1.0.6)](https://latenightsw.com/support/freeware/) script. You may place it in `~/Library/Script Libraries/`.
 
 ## Usage
 1. **Select items (either from a search or within the hierarchy) then launch the applescript.** If you launch without selecting, the script will take all search results if in search mode, else the direct children of the current group.
