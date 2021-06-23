@@ -1,8 +1,9 @@
 use AppleScript version "2.4" -- Yosemite (10.10) or later
 
-use script "RegexAndStuffLib" version "1.0.6"
 use scripting additions
 use framework "Foundation"
+use script "RegexAndStuffLib" version "1.0.7"
+use script "Dialog Toolkit Plus" version "1.1.2"
 
 -- classes, constants, and enums used
 property NSJSONSerialization : a reference to current application's NSJSONSerialization
@@ -70,7 +71,7 @@ on edgify(idA, idB, theLabel, theType, theColor)
 	return newEdge
 end edgify
 
-on graphItemsSet(theList)
+on graphItemsSet(theList, theSettings)
 	tell application id "DNtp"
 		set nodes to {}
 		set nodeIDs to {}
@@ -94,65 +95,73 @@ on graphItemsSet(theList)
 		show progress indicator "Graph View : processing links ..."
 		repeat with theItem in theList
 			step progress indicator
-			
-			-- graph parent-child edges
 			set idA to (get uuid of theItem) as string
-			repeat with childItem in children of theItem
-				if nodeIDs contains ((uuid of childItem) as string) then
-					set idB to (get uuid of childItem) as string
-					set edge to my edgify(idA, idB, "contains", "arrow", "#aff")
-					if edgeIDs does not contain (|id| of edge) then
-						set end of edgeIDs to |id| of edge
-						set end of edges to edge
+			
+			if (parentChildEdges of theSettings) then
+				-- graph parent-child edges
+				repeat with childItem in children of theItem
+					if nodeIDs contains ((uuid of childItem) as string) then
+						set idB to (get uuid of childItem) as string
+						set edge to my edgify(idA, idB, "contains", "arrow", "#aff")
+						if edgeIDs does not contain (|id| of edge) then
+							set end of edgeIDs to |id| of edge
+							set end of edges to edge
+						end if
 					end if
-				end if
-			end repeat
+				end repeat
+			end if
 			
 			-- graph "x-devonthink-item" links in URL edges
-			set theURL to get URL of theItem
-			set theMatch to regex search once theURL search pattern theLinkPattern
-			if theMatch is not missing value then
-				-- display alert (theMatch as string)
-				set idB to regex search once theMatch search pattern theUuidPattern
-				if nodeIDs contains idB then
-					set edge to my edgify(idA, idB, "source-url", "arrow", "#cd2")
-					if edgeIDs does not contain (|id| of edge) then
-						set end of edgeIDs to |id| of edge
-						set end of edges to edge
+			if (xdtURLEdges of theSettings) then
+				set theURL to get URL of theItem
+				set theMatch to regex search once theURL search pattern theLinkPattern
+				if theMatch is not missing value then
+					-- display alert (theMatch as string)
+					set idB to regex search once theMatch search pattern theUuidPattern
+					if nodeIDs contains idB then
+						set edge to my edgify(idA, idB, "source-url", "arrow", "#cd2")
+						if edgeIDs does not contain (|id| of edge) then
+							set end of edgeIDs to |id| of edge
+							set end of edges to edge
+						end if
 					end if
 				end if
 			end if
 			
 			-- graph "x-devonthink-item" in-text links from source as edge
-			set theOutLinks to (get outgoing references of theItem)
-			if theOutLinks is not {} then
-				-- display alert (theMatches as string)
-				repeat with theOutLink in theOutLinks
-					set idB to (get uuid of theOutLink) as string
-					if nodeIDs contains idB then
-						set edge to my edgify(idA, idB, "x-link", "arrow", "#808")
-						if edgeIDs does not contain (|id| of edge) then
-							set end of edgeIDs to |id| of edge
-							set end of edges to edge
+			if (xdtInTextEdges of theSettings) then
+				set theOutLinks to (get outgoing references of theItem)
+				if theOutLinks is not {} then
+					-- display alert (theMatches as string)
+					repeat with theOutLink in theOutLinks
+						set idB to (get uuid of theOutLink) as string
+						if nodeIDs contains idB then
+							set edge to my edgify(idA, idB, "x-link", "arrow", "#808")
+							if edgeIDs does not contain (|id| of edge) then
+								set end of edgeIDs to |id| of edge
+								set end of edges to edge
+							end if
 						end if
-					end if
-				end repeat
+					end repeat
+				end if
 			end if
 			
 			-- graph in-text wiki links from source as edge
-			set theOutLinks to (get outgoing Wiki references of theItem)
-			if theOutLinks is not {} then
-				-- display alert (theMatches as string)
-				repeat with theOutLink in theOutLinks
-					set idB to (get uuid of theOutLink) as string
-					if nodeIDs contains idB then
-						set edge to my edgify(idA, idB, "wiki-link", "arrow", "#f4d")
-						if edgeIDs does not contain (|id| of edge) then
-							set end of edgeIDs to |id| of edge
-							set end of edges to edge
+			if (wikiLinksdEdges of theSettings) then
+				set theOutLinks to (get outgoing Wiki references of theItem)
+				if theOutLinks is not {} then
+					-- display alert (theMatches as string)
+					repeat with theOutLink in theOutLinks
+						set idB to (get uuid of theOutLink) as string
+						if nodeIDs contains idB then
+							set edge to my edgify(idA, idB, "wiki-link", "arrow", "#f4d")
+							if edgeIDs does not contain (|id| of edge) then
+								set end of edgeIDs to |id| of edge
+								set end of edges to edge
+							end if
 						end if
-					end if
-				end repeat
+					end repeat
+				end if
 			end if
 			
 		end repeat
@@ -180,8 +189,35 @@ on run
 			-- set end of theSelection to current group
 		end if
 		
+		-- poll user for settings
+		
+		set accViewWidth to 400
+		set theTop to 0
+		set {theButtons, minWidth} to create buttons {"Cancel", "OK"} default button 1 given «class btns»:2
+		if minWidth > accViewWidth then set accViewWidth to minWidth -- make sure buttons fit
+		set {theRule, theTop} to create rule (theTop + 12) rule width accViewWidth
+		set {XdtInTextCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links from content as purple edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
+		set {WikiLinkCheckbox, theTop, newWidth} to create checkbox "Display wiki links from content as pink edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
+		set {XdtURLCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links in URL as green edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
+		set {parentChildCheckbox, theTop, newWidth} to create checkbox "Display parent-child relationships as cyan edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
+		set {boldLabel, theTop} to create label "Generate a graph from the selected items" bottom theTop + 20 max width accViewWidth control size large size aligns center aligned with bold type
+		set allControls to {XdtInTextCheckbox, WikiLinkCheckbox, XdtURLCheckbox, parentChildCheckbox, boldLabel}
+		set {buttonName, controlsResults} to display enhanced window "DT GraphView" acc view width accViewWidth acc view height theTop acc view controls allControls buttons theButtons with align cancel button
+		
+		set theSettings to {xdtInTextEdges:(get item 1 of controlsResults), wikiLinksdEdges:(get item 2 of controlsResults), xdtURLEdges:(get item 3 of controlsResults), parentChildEdges:(get item 4 of controlsResults)}
+		
+		-- abort if cancel
+		if buttonName is equal to "Cancel" then
+			return
+		end if
+		
+		-- abort if no type of edges selected
+		if not ((get xdtInTextEdges of theSettings) or (get xdtInTextEdges of theSettings) or (get xdtURLEdges of theSettings) or (get parentChildEdges of theSettings)) then
+			return
+		end if
+		
 		-- generate graph
-		set {nodes, edges} to my graphItemsSet(theSelection)
+		set {nodes, edges} to my graphItemsSet(theSelection, theSettings)
 		-- display alert (length of nodes as string) & " nodes, " & (length of edges as string) & " edges"
 		show progress indicator "Graph View : preparing view ..."
 		set theJSONData to my toJSON({nodes:nodes, edges:edges})
