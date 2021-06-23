@@ -10,6 +10,7 @@ property NSJSONSerialization : a reference to current application's NSJSONSerial
 property NSJSONWritingPrettyPrinted : a reference to 0
 property maxDepth : a reference to 1
 property idleTime : 5 -- in seconds
+property DTGVversion : "v2021-06-23"
 
 -- showJSON :: a -> String
 -- from https://forum.latenightsw.com/t/writing-json-data-with-nsjsonserialization/1130
@@ -202,7 +203,7 @@ on run
 		set {parentChildCheckbox, theTop, newWidth} to create checkbox "Display parent-child relationships as cyan edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
 		set {boldLabel, theTop} to create label "Generate a graph from the selected items" bottom theTop + 20 max width accViewWidth control size large size aligns center aligned with bold type
 		set allControls to {XdtInTextCheckbox, WikiLinkCheckbox, XdtURLCheckbox, parentChildCheckbox, boldLabel}
-		set {buttonName, controlsResults} to display enhanced window "DT GraphView" acc view width accViewWidth acc view height theTop acc view controls allControls buttons theButtons with align cancel button
+		set {buttonName, controlsResults} to display enhanced window "DT GraphView - " & DTGVversion acc view width accViewWidth acc view height theTop acc view controls allControls buttons theButtons with align cancel button
 		
 		set theSettings to {xdtInTextEdges:(get item 1 of controlsResults), wikiLinksdEdges:(get item 2 of controlsResults), xdtURLEdges:(get item 3 of controlsResults), parentChildEdges:(get item 4 of controlsResults)}
 		
