@@ -231,7 +231,7 @@ on run
 		set theJS to "graphThis(" & (theJSONData as text) & ");"
 		set theHTML to htmlPart1 & theJS & htmlPart2
 		set exportName to theMode & ": '" & theModeExtra & "' - network view (" & (length of nodes as string) & "n, " & (length of edges as string) & "e" & ")"
-		set exportLocation to inbox
+		set exportLocation to root of inbox
 		set theRecord to create record with {name:exportName, type:html, content:theHTML, locking:true} in exportLocation
 		open window for record theRecord
 		hide progress indicator
