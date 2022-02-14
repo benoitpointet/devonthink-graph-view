@@ -197,10 +197,10 @@ on run
 		set {theButtons, minWidth} to create buttons {"Cancel", "OK"} default button 1 given «class btns»:2
 		if minWidth > accViewWidth then set accViewWidth to minWidth -- make sure buttons fit
 		set {theRule, theTop} to create rule (theTop + 12) rule width accViewWidth
-		set {XdtInTextCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links from content as purple edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
-		set {WikiLinkCheckbox, theTop, newWidth} to create checkbox "Display wiki links from content as pink edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
-		set {XdtURLCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links in URL as green edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
-		set {parentChildCheckbox, theTop, newWidth} to create checkbox "Display parent-child relationships as cyan edges." bottom (theTop + 8) max width accViewWidth / 2 - 8
+		set {XdtInTextCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links from content as purple edges." bottom (theTop + 8) max width accViewWidth / 2 - 8 with initial state
+		set {WikiLinkCheckbox, theTop, newWidth} to create checkbox "Display wiki links from content as pink edges." bottom (theTop + 8) max width accViewWidth / 2 - 8 with initial state
+		set {XdtURLCheckbox, theTop, newWidth} to create checkbox "Display x-devonthink-item links in URL as green edges." bottom (theTop + 8) max width accViewWidth / 2 - 8 with initial state
+		set {parentChildCheckbox, theTop, newWidth} to create checkbox "Display parent-child relationships as cyan edges." bottom (theTop + 8) max width accViewWidth / 2 - 8 with initial state
 		set {boldLabel, theTop} to create label "Generate a graph from the selected items" bottom theTop + 20 max width accViewWidth control size large size aligns center aligned with bold type
 		set allControls to {XdtInTextCheckbox, WikiLinkCheckbox, XdtURLCheckbox, parentChildCheckbox, boldLabel}
 		set {buttonName, controlsResults} to display enhanced window "DT GraphView - " & DTGVversion acc view width accViewWidth acc view height theTop acc view controls allControls buttons theButtons with align cancel button
